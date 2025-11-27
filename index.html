@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
     <script>
+      // 屏蔽 Tailwind CDN 的生产环境警告，保持控制台整洁
+      const originalWarn = console.warn;
+      console.warn = (...args) => {
+        if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+          return;
+        }
+        originalWarn.apply(console, args);
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
       tailwind.config = {
         theme: {
           extend: {
