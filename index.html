@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
-    <base href="/Hello/">
+    
+    <!-- 1. Import Map -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+      }
+    }
+    </script>
+
+    <!-- 2. Tailwind Configuration -->
     <script>
-      // 1. 屏蔽 Tailwind CDN 的生产环境警告
+      // Suppress Tailwind CDN production warning
       const originalWarn = console.warn;
       console.warn = (...args) => {
         if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
@@ -15,8 +28,8 @@
         originalWarn.apply(console, args);
       };
 
-      // 2. 预定义配置对象，等待 Tailwind 加载后应用
-      window.myTailwindConfig = {
+      // Define config globally so it's ready when Tailwind loads
+      window.tailwindConfig = {
         theme: {
           extend: {
             animation: {
@@ -39,22 +52,17 @@
         }
       };
     </script>
+
+    <!-- 3. Load Tailwind & Apply Config -->
+    <script src="https://cdn.tailwindcss.com" onload="window.tailwind.config = window.tailwindConfig"></script>
     
-    <!-- 3. 加载 Tailwind 并使用 onload 回调确保 tailwind 对象已存在 -->
-    <script src="https://cdn.tailwindcss.com" onload="if (window.tailwind) window.tailwind.config = window.myTailwindConfig;"></script>
-    
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://aistudiocdn.com/react@^19.2.0",
-        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-        "react/": "https://aistudiocdn.com/react@^19.2.0/",
-        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
-      }
-    }
-    </script>
+    <!-- Prevent FOUC (Flash of Unstyled Content) dark mode -->
+    <style>body { background-color: #020617; color: white; }</style>
 </head>
 <body>
     <div id="root"></div>
+    
+    <!-- 4. Application Entry Point (CRITICAL) -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>
