@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
     <script>
-      // 屏蔽 Tailwind CDN 的生产环境警告，保持控制台整洁
+      // 1. 屏蔽 Tailwind CDN 的生产环境警告
       const originalWarn = console.warn;
       console.warn = (...args) => {
         if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
@@ -13,10 +13,9 @@
         }
         originalWarn.apply(console, args);
       };
-    </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
+
+      // 2. 预定义配置对象，等待 Tailwind 加载后应用
+      window.myTailwindConfig = {
         theme: {
           extend: {
             animation: {
@@ -37,18 +36,22 @@
             }
           }
         }
-      }
+      };
     </script>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
-  }
-}
-</script>
+    
+    <!-- 3. 加载 Tailwind 并使用 onload 回调确保 tailwind 对象已存在 -->
+    <script src="https://cdn.tailwindcss.com" onload="if (window.tailwind) window.tailwind.config = window.myTailwindConfig;"></script>
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+      }
+    }
+    </script>
 </head>
 <body>
     <div id="root"></div>
